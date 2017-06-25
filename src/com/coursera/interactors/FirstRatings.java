@@ -1,4 +1,4 @@
-package com.coursera.testing;
+package com.coursera.interactors;
 
 import edu.duke.*;
 import org.apache.commons.csv.*;
