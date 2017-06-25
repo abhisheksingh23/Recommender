@@ -182,7 +182,7 @@ public class FirstRatings {
 	}
 	
 	public static void main(String[] args) {
-		//testLoadMovies();
+		testLoadMovies();
 		testLoadRaters();
 	}
 }
