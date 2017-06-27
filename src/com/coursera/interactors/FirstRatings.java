@@ -46,7 +46,7 @@ public class FirstRatings {
 			
 			if (0 == index || !raters.get(index - 1).getID().equals(raterId)) 
 			{
-				rater = new PlainRater(raterId);
+				rater = new EfficientRater(raterId);
 				rater.addRating(
 				    movieId, 
 				    rating

@@ -7,7 +7,7 @@ import com.coursera.models.Rating;
 
 public class MovieRunnerAverage {
 	
-	public void printAverageRatings()
+	public static void printAverageRatings()
 	{
 		SecondRatings sr = new SecondRatings(
 							   "data/ratedmoviesfull.csv",
@@ -22,7 +22,7 @@ public class MovieRunnerAverage {
 	    }
 	}
 	
-	public void getAverageRatingOneMovie() {
+	public static void getAverageRatingOneMovie() {
 		SecondRatings sr = new SecondRatings(
 							   "data/ratedmoviesfull.csv",
 						       "data/ratings.csv"
@@ -35,5 +35,10 @@ public class MovieRunnerAverage {
 			if(r.getItem().equals(movieID))
 				System.out.println("The average rating for the movie \"" + movieTitle + "\" is " + r.getValue());
 		}
+	}
+	
+	public static void main(String[] args) {
+		printAverageRatings();
+		getAverageRatingOneMovie();
 	}
 }
