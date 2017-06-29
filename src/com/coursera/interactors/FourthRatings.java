@@ -67,4 +67,22 @@ public class FourthRatings {
     	}
     	return ratings;
 	}
+    
+    private double doProduct(Rater me, Rater r)
+    {
+    	ArrayList<String> myMovies = me.getItemsRated();
+    	double dotProduct = 0;
+    	for(String movie : myMovies)
+    	{
+    		if(r.hasRating(movie))
+    		{
+    			double myRating = me.getRating(movie);
+    			double rRating = me.getRating(movie);
+    			myRating -= 5;
+    			rRating -= 5;
+    			dotProduct += myRating * rRating;
+    		}
+    	}
+    	return dotProduct;
+    }
 }
