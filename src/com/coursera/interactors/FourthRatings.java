@@ -1,6 +1,7 @@
 package com.coursera.interactors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.coursera.models.MovieDatabase;
 import com.coursera.models.Rater;
@@ -68,7 +69,7 @@ public class FourthRatings {
     	return ratings;
 	}
     
-    private double doProduct(Rater me, Rater r)
+    private double dotProduct(Rater me, Rater r)
     {
     	ArrayList<String> myMovies = me.getItemsRated();
     	double dotProduct = 0;
@@ -84,5 +85,67 @@ public class FourthRatings {
     		}
     	}
     	return dotProduct;
+    }
+    
+    private ArrayList<Rating> getSimilarities(String id)
+    {
+    	ArrayList<Rating> ratings = new ArrayList<Rating>();
+    	Rater me = RaterDatabase.getRater(id);
+    	for(Rater rater : RaterDatabase.getRaters())
+    	{
+    		if(!rater.getID().equals(id))
+    		{
+    			double dotProduct = dotProduct(me, rater);
+    			if(dotProduct > 0)
+    			{
+    				ratings.add(new Rating(id, dotProduct));
+    			}
+    		}
+    	}
+    	Collections.sort(ratings, Collections.reverseOrder());
+    	return ratings;
+    }
+    
+    public ArrayList<Rating> getSimilarRatings(
+        String id, int numSimilarRaters, 
+        int minimalRaters
+    ) 
+    {
+    	ArrayList<Rating> res = getSimilarRatingsByFilter(
+    							    id, numSimilarRaters,
+    							    minimalRaters, new TrueFilter()
+    							);
+		return res;		
+    }
+    
+    public ArrayList<Rating> getSimilarRatingsByFilter(
+        String id, int numSimilarRaters, 
+        int minimalRaters, Filter filterCriteria
+    ) 
+    {
+    	ArrayList<Rating> res = new ArrayList<Rating>();
+    	ArrayList<Rating> list = getSimilarities(id);	
+    	ArrayList<String> movies = MovieDatabase.filterBy(filterCriteria);
+	    for (String movieID : movies) {
+        	double weightedAverage = 0;
+        	double sum = 0;
+        	int countRaters = 0;
+	    	for (int i = 0; i < numSimilarRaters; i++) {
+	    		Rating r = list.get(i);
+	    		double weight = r.getValue();
+	    		String raterID = r.getItem();
+	    		Rater myRater = RaterDatabase.getRater(raterID);
+	    		if(myRater.hasRating(movieID)) {
+	    			countRaters++;
+	    			sum += weight * myRater.getRating(movieID);
+	    		}
+	    	}
+	    	if (countRaters >= minimalRaters) {
+	    		weightedAverage = sum / countRaters;
+	    		res.add(new Rating(movieID, weightedAverage));
+			}			
+	    }
+		Collections.sort(res, Collections.reverseOrder());
+		return res;	
     }
 }

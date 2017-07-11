@@ -5,7 +5,7 @@ import java.util.*;
 import org.apache.commons.csv.*;
 
 public class RaterDatabase {
-    private static HashMap<String,Rater> ourRaters;
+    private static HashMap<String, Rater> ourRaters;
      
 	private static void initialize() {
 	    // this method is only called from addRatings 
@@ -26,24 +26,24 @@ public class RaterDatabase {
         FileResource fr = new FileResource(filename);
         CSVParser csvp = fr.getCSVParser();
         for(CSVRecord rec : csvp) {
-                String id = rec.get("rater_id");
-                String item = rec.get("movie_id");
-                String rating = rec.get("rating");
-                addRaterRating(id,item,Double.parseDouble(rating));
+            String id = rec.get("rater_id");
+            String item = rec.get("movie_id");
+            String rating = rec.get("rating");
+            addRaterRating(id, item, Double.parseDouble(rating));
         } 
     }
     
     public static void addRaterRating(String raterID, String movieID, double rating) {
         initialize(); 
         Rater rater =  null;
-                if (ourRaters.containsKey(raterID)) {
-                    rater = ourRaters.get(raterID); 
-                } 
-                else { 
-                    rater = new EfficientRater(raterID);
-                    ourRaters.put(raterID,rater);
-                 }
-                 rater.addRating(movieID,rating);
+        if (ourRaters.containsKey(raterID)) {
+            rater = ourRaters.get(raterID); 
+        } 
+        else { 
+            rater = new EfficientRater(raterID);
+            ourRaters.put(raterID,rater);
+         }
+         rater.addRating(movieID,rating);
     } 
 	         
     public static Rater getRater(String id) {
@@ -61,8 +61,5 @@ public class RaterDatabase {
  
     public static int size() {
 	    return ourRaters.size();
-    }
-    
-    
-        
+    }     
 }
